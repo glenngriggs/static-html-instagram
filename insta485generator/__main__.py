@@ -9,7 +9,7 @@ import click
 
 @click.option(
     "-o", "--output", "output_dir",
-    type=click.Path(file_okay=False, dir_okay=True, writable=True, path_type=pathlib.Path),
+    type=click.Path(path_type=pathlib.Path),
     help="Output directory.",
 )
 @click.option(
@@ -17,7 +17,6 @@ import click
     is_flag=True,
     help="Print more output.",
 )
-
 
 def main(input_dir):
     input_dir = pathlib.Path(input_dir)
