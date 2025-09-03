@@ -23,6 +23,8 @@ import jinja2
 )
 
 def main(input_dir, output_dir, verbose):
+
+    """Build static HTML site from directory of HTML templates and plain files."""
     input_dir = pathlib.Path(input_dir)
     # print(f"DEBUG input_dir={input_dir}")
 
