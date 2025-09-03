@@ -57,24 +57,30 @@ def main(input_dir, output_dir, verbose):
         autoescape=jinja2.select_autoescape(["html", "xml"]),
     )
 
-    # Render each page
-    for entry in config_list:
-        url = (entry["url"] or "/").lstrip("/")
-        tpl_name = entry["template"]
-        ctx = entry.get("context", {})
+    
+    try:    # Render each page
+        for entry in config_list:
+            url = (entry["url"] or "/").lstrip("/")
+            tpl_name = entry["template"]
+            ctx = entry.get("context", {})
 
-        try:
-            tpl = env.get_template(tpl_name)
-            html = tpl.render(**ctx)
-        except jinja2.exceptions.TemplateError as e:
-            click.echo(f"insta485generator error: '{tpl_name}'\n{e}", err=True)
-            sys.exit(1)
+            try:
+                tpl = env.get_template(tpl_name)
+                html = tpl.render(**ctx)
+            except jinja2.exceptions.TemplateError as e:
+                click.echo(f"insta485generator error: '{tpl_name}'\n{e}", err=True)
+                click.echo(str(e), err=True)
+                sys.exit(1)
 
-        out_path = (output_dir / "index.html") if url == "" else (output_dir / url / "index.html")
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(html, encoding="utf-8")
-        if verbose:
-            click.echo(f"Rendered {tpl_name} -> {out_path}")
+            out_path = (output_dir / "index.html") if url == "" else (output_dir / url / "index.html")
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(html, encoding="utf-8")
+            if verbose:
+                click.echo(f"Rendered {tpl_name} -> {out_path}")
+    
+    except FileNotFoundError as e:
+        click.echo(f"insta485generator error: '{e.filename}' not found", err=True)
+        sys.exit(1)
 
     # Copy static/* into output root
     static_src = input_dir / "static"
