@@ -44,6 +44,7 @@ def main(input_dir, output_dir, verbose):
         sys.exit(1)
     except json.JSONDecodeError as e:
         click.echo(f"insta485generator error: '{config_path}'\n{e}", err=True)
+        click.echo(str(e), err=True)
         sys.exit(1)
 
     if not template_dir.exists():
