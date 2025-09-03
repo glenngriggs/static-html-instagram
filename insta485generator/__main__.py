@@ -1,12 +1,12 @@
 """Build static HTML site from directory of HTML templates and plain files."""
 
-
 from __future__ import annotations
-import sys, json, pathlib, shutil
+import sys
+import json 
+import pathlib 
+import shutil
 import click
 import jinja2
-
-
 
 @click.command(help="Templated static website generator.")
 @click.argument("input_dir", nargs=1 , type=click.Path(exists=True))
@@ -23,7 +23,6 @@ import jinja2
 )
 
 def main(input_dir, output_dir, verbose):
-
     """Build static HTML site from directory of HTML templates and plain files."""
     input_dir = pathlib.Path(input_dir)
     # print(f"DEBUG input_dir={input_dir}")
