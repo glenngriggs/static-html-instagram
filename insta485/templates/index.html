@@ -16,10 +16,13 @@
     </header>
 
     <main>
-      {% for post in posts %} {% set owner = post.owner %} {% set post_url =
+      {% for post in posts %} {% set owner = post.owner %}
+      <!--{% set post_url =
       post.url if post.url is not none else ('/posts/' ~ (post.postid|string) ~
-      '/') %} {% set likes = (post.likes if post.likes is not none else
-      (post.num_likes if post.num_likes is not none else 0)) %}
+      '/') %} -->
+      {% set post_url = post.url or ('/posts/' ~ post.postid ~ '/') %} {% set
+      likes = (post.likes if post.likes is not none else (post.num_likes if
+      post.num_likes is not none else 0)) %}
       <article class="post">
         <header class="post-header">
           <a href="/users/{{ owner }}/">
