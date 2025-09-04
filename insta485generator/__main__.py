@@ -9,7 +9,7 @@ import jinja2
 
 
 def _render_all(env, config_list, output_dir, verbose):
-    """Render each page (moved out of main to reduce locals/branches)."""
+    """Render each page."""
     try:
         for entry in config_list:
             url = (entry["url"] or "/").lstrip("/")
@@ -47,7 +47,7 @@ def _render_all(env, config_list, output_dir, verbose):
 
 
 def _copy_static(input_dir, output_dir, verbose):
-    """Copy static/* into output root (moved out to reduce statements)."""
+    """Copy static/* into output root."""
     static_src = input_dir / "static"
     if not static_src.exists():
         return
@@ -87,7 +87,6 @@ def main(input_dir, output_dir, verbose):
         )
         sys.exit(1)
 
-    # Read config.json
     try:
         with config_path.open(encoding="utf-8") as f:
             config_list = json.load(f)
@@ -98,7 +97,6 @@ def main(input_dir, output_dir, verbose):
         )
         sys.exit(1)
     except json.JSONDecodeError as e:
-        # Keeping your current two-echo pattern
         click.echo(
             f"insta485generator error: '{config_path}'\n{e}",
             err=True
@@ -119,7 +117,7 @@ def main(input_dir, output_dir, verbose):
         autoescape=jinja2.select_autoescape(["html", "xml"]),
     )
 
-    # Moved work out:
+    # Popped work out:
     _render_all(env, config_list, output_dir, verbose)
     _copy_static(input_dir, output_dir, verbose)
 
