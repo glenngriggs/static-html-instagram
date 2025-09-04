@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>insta485</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/" class="brand">insta485</a>
+        <a href="/explore/">explore</a>
+        <a href="/users/{{ logname }}/">{{ logname }}</a>
+      </nav>
+      <hr />
+    </header>
+
+    {# Accept either `post` or `posts[0]` in context #} {% set p = post if post
+    is defined else (posts[0] if posts is defined and posts|length>0 else {}) %}
+
+    <main>
+      <article class="post">
+        <header class="post-header">
+          <a href="/users/{{ p.owner }}/">
+            {# Use whichever key exists; skip the tag entirely if nothing is
+            provided #} {% set owner_img = (p.owner_img_url or p.owner_img) %}
+            {% if owner_img %}
+            <img
+              src="{{ owner_img }}"
+              alt="{{ p.owner }} profile"
+              style="height: 32px; vertical-align: middle"
+            />
+            {% endif %}
+          </a>
+          <a href="/users/{{ p.owner }}/" class="owner">{{ p.owner }}</a>
+          <a href="/posts/{{ p.postid }}/" class="timestamp"
+            >{{ p.timestamp or p.created }}</a
+          >
+        </header>
+
+        <figure>
+          {# Accept alternate key names; render only if present #} {% set
+          post_img = (p.img_url or p.image_url or p.img) %} {% if post_img %}
+          <img
+            src="{{ post_img }}"
+            alt="post image"
+            style="max-width: 100%; height: auto"
+          />
+          {% endif %}
+        </figure>
+
+        <section class="meta">
+          {% set likes = p.likes if p.likes is not none else (p.num_likes if
+          p.num_likes is not none else 0) %}
+          <div class="likes">
+            {{ likes }} {{ 'like' if likes == 1 else 'likes' }}
+          </div>
+          <ul class="comments">
+            {% for c in (p.comments or []) %}
+            <li>
+              <a href="/users/{{ c.owner }}/">{{ c.owner }}</a> {{ c.text }}
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
