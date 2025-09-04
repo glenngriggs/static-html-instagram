@@ -1,0 +1,5 @@
+{% macro pluralize(n, word, plural=None) -%} {{ n }} {{ word if n == 1 else
+(plural if plural is not none else word ~ 's') }} {%- endmacro %} {% macro
+relationship_label(logname, username, follows) -%} {%- if logname == username
+-%} {# blank #} {%- elif follows -%} following {%- else -%} not following {%-
+endif -%} {%- endmacro %}

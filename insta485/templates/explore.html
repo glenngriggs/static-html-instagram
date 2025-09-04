@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>insta485</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    {% include "_header.html" %} {% from "_macros.html" import
+    relationship_label %}
+
+    <main>
+      <h1>Explore</h1>
+      <ul class="userlist">
+        {% for u in not_following %}
+        <li>
+          <a href="/users/{{ u.username }}/">
+            <img
+              src="{{ u.user_img_url }}"
+              alt="{{ u.username }} profile"
+              style="height: 50px; vertical-align: middle"
+            />
+          </a>
+          <a href="/users/{{ u.username }}/">{{ u.username }}</a>
+          <span class="relationship">
+            {{ relationship_label(logname, u.username, False) }}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+    </main>
+  </body>
+</html>
