@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Stop on errors, treat unset vars as errors, fail in pipes, and echo commands
+
+set -Eeuo pipefail
+set -x
+
+# 1) pytest
+pytest -v tests/
+
+# 2) style checks
+pycodestyle insta485generator
+pydocstyle insta485generator
+pylint insta485generator
+
+# 3) clean previous output
+rm -rf insta485_html
+
+# 4) build new output
+insta485generator insta485 -o insta485_html
+
+# 5) HTML validate
+#   - hand-coded HTML
+html5validator --ignore JAVA_TOOL_OPTIONS --root handcoded_html
+#   - generated HTML
+html5validator --ignore JAVA_TOOL_OPTIONS --root insta485_html
