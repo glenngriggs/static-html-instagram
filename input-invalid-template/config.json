@@ -1,3 +1,0 @@
-[
-  { "url": "/", "template": "test.html", "context": { "items": [1,2,3] } }
-]
