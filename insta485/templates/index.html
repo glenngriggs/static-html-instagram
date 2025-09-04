@@ -2,129 +2,62 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>insta485</title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <header>
       <nav>
-        <a href="/" class="brand">
-          <img
-            src="/images/logo.png"
-            alt="insta485"
-            style="height: 32px; vertical-align: middle"
-          />
-          <span>insta485</span>
-        </a>
+        <a href="/" class="brand">insta485</a>
         <a href="/explore/">explore</a>
-        <a href="/users/awdeorio/">awdeorio</a>
+        <a href="/users/{{ logname }}/">{{ logname }}</a>
       </nav>
       <hr />
     </header>
 
     <main>
-      <!--  Post 1: /posts/3/ (owner: awdeorio)  -->
+      {% for post in posts %} {% set owner = post.owner %} {% set post_url =
+      post.url if post.url is not none else ('/posts/' ~ (post.postid|string) ~
+      '/') %} {% set likes = (post.likes if post.likes is not none else
+      (post.num_likes if post.num_likes is not none else 0)) %}
       <article class="post">
         <header class="post-header">
-          <img
-            src="/uploads/e1a7c5c32973862ee15173b0259e3efdb6a391af.jpg"
-            alt="deorio pfp"
-            style="height: 32px; vertical-align: middle"
-          />
-
-          <a href="/users/awdeorio/" class="owner">awdeorio</a>
-
-          <a href="/posts/3/" class="timestamp">10 minutes ago</a>
+          <a href="/users/{{ owner }}/">
+            <img
+              src="{{ post.owner_img_url or post.owner_img }}"
+              alt="{{ owner }} profile"
+              style="height: 32px; vertical-align: middle"
+            />
+          </a>
+          <a href="/users/{{ owner }}/" class="owner">{{ owner }}</a>
+          <a href="{{ post_url }}" class="timestamp"
+            >{{ post.timestamp or post.created }}</a
+          >
         </header>
 
         <figure>
           <img
-            src="/uploads/9887e06812ef434d291e4936417d125cd594b38a.jpg"
-            alt="chicks in a brooder"
+            src="{{ post.img_url }}"
+            alt="post image"
             style="max-width: 100%; height: auto"
           />
         </figure>
 
         <section class="meta">
-          <div class="likes">1 like</div>
+          <div class="likes">
+            {{ likes }} {{ 'like' if likes == 1 else 'likes' }}
+          </div>
           <ul class="comments">
+            {% for c in (post.comments or []) %}
             <li>
-              <a href="/users/awdeorio/">awdeorio</a> #chickensofinstagram
+              <a href="/users/{{ c.owner }}/">{{ c.owner }}</a> {{ c.text }}
             </li>
-            <li><a href="/users/jflinn/">jflinn</a> I &lt;3 chickens</li>
-            <li><a href="/users/michjc/">michjc</a> Cute overload!</li>
+            {% endfor %}
           </ul>
         </section>
         <hr />
       </article>
-
-      <!-- Post 2: /posts/2/ (owner: jflinn) -->
-      <article class="post">
-        <header class="post-header">
-          <img
-            src="/uploads/505083b8b56c97429a728b68f31b0b2a089e5113.jpg"
-            alt="jflinn pfp"
-            style="height: 32px; vertical-align: middle"
-          />
-
-          <a href="/users/jflinn/" class="owner">jflinn</a>
-          <a href="/posts/2/" class="timestamp">4 hours ago</a>
-        </header>
-
-        <figure>
-          <img
-            src="/uploads/ad7790405c539894d25ab8dcf0b79eed3341e109.jpg"
-            alt="crossword puzzle"
-            style="max-width: 100%; height: auto"
-          />
-        </figure>
-
-        <section class="meta">
-          <div class="likes">2 likes</div>
-          <ul class="comments">
-            <li><a href="/users/awdeorio/">awdeorio</a> Sick #crossword</li>
-          </ul>
-        </section>
-        <hr />
-      </article>
-
-      <!--  Post 3: /posts/1/ (owner: awdeorio)  -->
-      <article class="post">
-        <header class="post-header">
-          <img
-            src="/uploads/e1a7c5c32973862ee15173b0259e3efdb6a391af.jpg"
-            alt="deorio pfp"
-            style="height: 32px; vertical-align: middle"
-          />
-
-          <a href="/users/awdeorio/" class="owner">awdeorio</a>
-          <a href="/posts/1/" class="timestamp">a day ago</a>
-        </header>
-
-        <figure>
-          <img
-            src="/uploads/122a7d27ca1d7420a1072f695d9290fad4501a41.jpg"
-            alt="chickens walking a plank"
-            style="max-width: 100%; height: auto"
-          />
-        </figure>
-
-        <section class="meta">
-          <div class="likes">3 likes</div>
-          <ul class="comments">
-            <li>
-              <a href="/users/jflinn/">jflinn</a> Walking the plank
-              #chickensofinstagram
-            </li>
-            <li>
-              <a href="/users/awdeorio/">awdeorio</a> This was after trying to
-              teach them to do a #crossword
-            </li>
-          </ul>
-        </section>
-        <hr />
-      </article>
+      {% endfor %}
     </main>
   </body>
 </html>
