@@ -1,4 +1,4 @@
-# EECS 485 Project 1 Solution
+# Static Site Instagram
 
 Templated Static Site Generator
 
